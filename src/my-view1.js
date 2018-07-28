@@ -9,12 +9,12 @@
  */
 
 import {LitElement, html} from '@polymer/lit-element';
-
-import './shared-styles.js';
+import {sharedStyles} from './shared-styles'
 
 class MyView1 extends LitElement {
   _render() {
     return html`
+    ${sharedStyles}
     <style>
         :host {
           display: block;

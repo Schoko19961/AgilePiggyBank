@@ -8,13 +8,14 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import './shared-styles.js';
+import { LitElement, html } from '../node_modules/@polymer/lit-element';
+import { sharedStyles } from './shared-styles.js';
 
-class MyView1 extends PolymerElement {
-  static get template() {
+class MyView1 extends LitElement {
+  _render() {
     return html`
-      <style include="shared-styles">
+      ${sharedStyles}
+      <style>
         :host {
           display: block;
 

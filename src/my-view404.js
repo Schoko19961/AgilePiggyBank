@@ -8,11 +8,13 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LitElement, html } from '../node_modules/@polymer/lit-element';
+import { sharedStyles } from './shared-styles';
 
-class MyView404 extends PolymerElement {
-  static get template() {
+class MyView404 extends LitElement {
+  _render() {
     return html`
+    ${sharedStyles}
       <style>
         :host {
           display: block;
@@ -21,7 +23,7 @@ class MyView404 extends PolymerElement {
         }
       </style>
 
-      Oops you hit a 404. <a href="[[rootPath]]">Head back to home.</a>
+      Oops you hit a 404. <a href="/">Head back to home.</a>
     `;
   }
 }

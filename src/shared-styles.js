@@ -7,13 +7,8 @@
  * Code distributed by Google as part of the polymer project is also
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
-
-import '@polymer/polymer/polymer-element.js';
-
-const $_documentContainer = document.createElement('template');
-$_documentContainer.innerHTML = `<dom-module id="shared-styles">
-  <template>
-    <style>
+import {html} from '@polymer/lit-element'
+export const sharedStyles = html`<style id="global">
       .card {
         margin: 24px;
         padding: 16px;
@@ -40,8 +35,4 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
         color: #212121;
         font-size: 22px;
       }
-    </style>
-  </template>
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
+    </style>`;

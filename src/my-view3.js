@@ -8,14 +8,14 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
-import { LitElement, html } from '@polymer/lit-element';
-import {sharedStyles}from './shared-styles';
+import { LitElement, html  } from '../node_modules/@polymer/lit-element';
+import { sharedStyles } from './shared-styles.js';
 
 class MyView3 extends LitElement {
   _render() {
     return html`
-      ${sharedStyles}
-      <style include="shared-styles">
+    ${sharedStyles}
+      <style>
         :host {
           display: block;
 

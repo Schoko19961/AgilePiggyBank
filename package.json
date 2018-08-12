@@ -13,17 +13,9 @@
     "test:integration": "polymer build # test that psk builds without error with the CLI"
   },
   "dependencies": {
-    "@polymer/app-layout": "^3.0.0-pre.21",
-    "@polymer/app-route": "^3.0.0-pre.21",
-    "@polymer/iron-flex-layout": "^3.0.0-pre.21",
-    "@polymer/iron-iconset-svg": "^3.0.0-pre.21",
-    "@polymer/iron-media-query": "^3.0.0-pre.21",
-    "@polymer/iron-pages": "^3.0.0-pre.21",
-    "@polymer/iron-selector": "^3.0.0-pre.21",
     "@polymer/lit-element": "^0.5.2",
-    "@polymer/paper-icon-button": "^3.0.0-pre.21",
-    "@polymer/polymer": "^3.0.0",
-    "@webcomponents/webcomponentsjs": "^2.0.3"
+    "@types/polymer": "^1.2.4",
+    "pwa-helpers": "^0.8.3"
   },
   "devDependencies": {
     "polymer-cli": "^1.7.7",

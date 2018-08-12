@@ -9,11 +9,10 @@
  */
 
 import { LitElement, html } from '@polymer/lit-element';
-import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
+import { setPassiveTouchGestures, setRootPath } from '@polymer/polymer/lib/utils/settings.js';
 import {Router} from '@vaadin/router';
 import './my-view2';
 import './my-view3';
-import { resolveCss } from '../node_modules/@polymer/polymer/lib/utils/resolve-url';
 // import './my-view404';
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -21,7 +20,7 @@ setPassiveTouchGestures(true);
 
 // Set Polymer's root path to the same value we passed to our service worker
 // in `index.html`.
-// setRootPath(MyAppGlobals.rootPath);
+setRootPath(MyAppGlobals.rootPath);
 
 const onNavigate = (context)=>{
   return new Promise(async (resolve,reject)=>{
@@ -47,7 +46,7 @@ class MyApp extends LitElement {
 
 		router.setRoutes([
 			// {path: '/', component: 'my-view1'},
-			{path: '/view1', component: 'my-view1', bundle: 'src/my-view1.js'},
+			{path: '/view1', component: 'my-view1', bundle: 'my-view1.js'},
 			{path: '/view2', component: 'my-view2'},
 			{path: '/view3', component: 'my-view3'}
     ]);
@@ -65,7 +64,7 @@ class MyApp extends LitElement {
   }
   constructor(){
     super();
-    
+    console.log(MyAppGlobals.rootPath);
   }
 
   static get properties() {

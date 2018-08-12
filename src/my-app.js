@@ -10,9 +10,7 @@
 
 import { LitElement, html } from '@polymer/lit-element';
 import { setPassiveTouchGestures, setRootPath } from '@polymer/polymer/lib/utils/settings.js';
-import {Router} from '@vaadin/router';
-import './my-view2';
-import './my-view3';
+import { installRouter } from 'pwa-helpers';
 // import './my-view404';
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -22,44 +20,34 @@ setPassiveTouchGestures(true);
 // in `index.html`.
 setRootPath(MyAppGlobals.rootPath);
 
-const onNavigate = (context)=>{
-  return new Promise(async (resolve,reject)=>{
-    try{
-      switch (context.pathname){
-        case '/view1':
-        console.log("Importing file");
-          await import('./my-view1.js');
-      }
-      resolve();
-    }catch(err){
-      console.log(err);
-      reject(err);
-    }
-    console.log();
-    context.next();
-  })
-}
 
 class MyApp extends LitElement {
-  _firstRendered(){
-		const router = new Router(this.shadowRoot.querySelector('#outlet'));
 
-		router.setRoutes([
-			// {path: '/', component: 'my-view1'},
-			{path: '/view1', component: 'my-view1', bundle: 'my-view1.js'},
-			{path: '/view2', component: 'my-view2'},
-			{path: '/view3', component: 'my-view3'}
-    ]);
-    
-}
-
-  _render() {
+  _render({_view}) {
     return html`
+    <style>
+      [view] > * {
+        display: none;
+        padding: 0 16px;
+      }
+      [view=view1] my-view1,
+      [view=view2] my-view2,
+      [view=view3] my-view3,
+      [view=view404] my-view404 {
+        display: block;
+      }
+    </style>
+      <a href="/">Home</a>
       <a href="/view1">View 1</a>
       <a href="/view2">View 2</a>
       <a href="/view3">View 3</a>
       <a href="/asdasd">Error</a>
-      <div id="outlet"></div>
+      <div view$="${_view}">
+        <my-view1></my-view1>
+        <my-view2></my-view2>
+        <my-view3></my-view3>
+        <my-view404></my-view404>
+      </div>
     `;
   }
   constructor(){
@@ -69,11 +57,53 @@ class MyApp extends LitElement {
 
   static get properties() {
     return {
-      router: Router
+      _view: String
     };
   }
 
-  
+  ready(){
+    super.ready();
+    installRouter((location, event) => {
+      const path = window.decodeURIComponent(location.pathname);
+      const splitPath = (path || '').slice(1).split('/'); // Parts of the URL (without params)
+      const params = location.search.slice(1).split('&').reduce((acc, item) => {  // Params of the url key - value
+        const pair = item.split('=');
+        acc[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+        return acc;
+      }, {});
+      // Only scroll to top on link clicks, not popstate events.
+      if (event && event.type === 'click') {
+        window.scrollTo(0, 0);
+      }
+      console.log(splitPath[0]);
+
+      switch (splitPath[0]){ // Check for first part of url
+        case "":
+          this._view = undefined;
+        break;
+        case "view1":
+          import('./my-view1.js').then(()=>{ //Load the view
+            this._view = "view1"; //Set view var => Results in changed css
+          });
+        break;
+        case "view2":
+          import('./my-view2.js').then(()=>{
+            this._view = "view2";
+          });
+        break;
+        case "view3":
+          import('./my-view3.js').then(()=>{
+            this._view = "view3";
+          });
+        break;
+        default:
+          import('./my-view404.js').then(()=>{
+            this._view = "view404";
+          });
+        break;
+      }
+});
+  }
   
 }
 

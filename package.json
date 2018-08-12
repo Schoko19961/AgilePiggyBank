@@ -15,6 +15,7 @@
   "dependencies": {
     "@polymer/lit-element": "^0.5.2",
     "@types/polymer": "^1.2.4",
+    "page": "^1.8.6",
     "pwa-helpers": "^0.8.3"
   },
   "devDependencies": {

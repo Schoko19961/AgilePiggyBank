@@ -10,7 +10,7 @@
 
 import { LitElement, html } from '@polymer/lit-element';
 import { setPassiveTouchGestures, setRootPath } from '@polymer/polymer/lib/utils/settings.js';
-import { installRouter } from 'pwa-helpers';
+import  * as page from 'page';
 // import './my-view404';
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -63,46 +63,37 @@ class MyApp extends LitElement {
 
   ready(){
     super.ready();
-    installRouter((location, event) => {
-      const path = window.decodeURIComponent(location.pathname);
-      const splitPath = (path || '').slice(1).split('/'); // Parts of the URL (without params)
-      const params = location.search.slice(1).split('&').reduce((acc, item) => {  // Params of the url key - value
-        const pair = item.split('=');
-        acc[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-        return acc;
-      }, {});
-      // Only scroll to top on link clicks, not popstate events.
-      if (event && event.type === 'click') {
-        window.scrollTo(0, 0);
-      }
-      console.log(splitPath[0]);
+    
+    page('/', home);
+    page('/view1', myView1);
+    page('/view2', myView2);
+    page('/view3', myView3);
+    page.base('404', myView404)
+  }
 
-      switch (splitPath[0]){ // Check for first part of url
-        case "":
-          this._view = undefined;
-        break;
-        case "view1":
-          import('./my-view1.js').then(()=>{ //Load the view
-            this._view = "view1"; //Set view var => Results in changed css
-          });
-        break;
-        case "view2":
-          import('./my-view2.js').then(()=>{
-            this._view = "view2";
-          });
-        break;
-        case "view3":
-          import('./my-view3.js').then(()=>{
-            this._view = "view3";
-          });
-        break;
-        default:
-          import('./my-view404.js').then(()=>{
-            this._view = "view404";
-          });
-        break;
-      }
-});
+  home(){
+    this._view = undefined; 
+  }
+
+  myView1(){
+    import('./my-view1').then(()=>{
+      this._view = 'view1';
+    })
+  }
+  myView2(){
+     import('./my-view2').then(()=>{
+      this._view = 'view2';
+    });
+  }
+  myView3(){
+    import('./my-view3').then(()=>{
+      this._view = 'view3';
+    });
+  }
+  myView404(){
+    import('./my-view404').then(()=>{
+      this._view = 'view404';
+    });
   }
   
 }
